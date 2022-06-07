@@ -1,0 +1,19 @@
+---
+apiVersion: "networking.k8s.io/v1"
+kind: "Ingress"
+metadata:
+  name: "dvc-wtd-io-ingress"
+  namespace: "dvc-wtd-io"
+spec:
+  rules:
+    - host: "dvc.wtd.io"
+      http:
+        paths:
+          - pathType: "Prefix"
+            path: "/"
+            backend:
+              service:
+                name: "dvc-wtd-io-service"
+                port:
+                  number: 80
+...

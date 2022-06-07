@@ -1,0 +1,26 @@
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "dvc-wtd-io-deployment"
+  namespace: "dvc-wtd-io"
+spec:
+  selector:
+    matchLabels:
+      component: "dvc"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: "dvc"
+    spec:
+      containers:
+        - name: "dvc-wtd-io"
+          image: "localhost:5000/wtd-dvc"
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "250m"
+          ports:
+            - containerPort: 80
+...
