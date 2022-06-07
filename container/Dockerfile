@@ -1,6 +1,5 @@
 ARG BASEIMAGE="docker.io/library/python:3.7-alpine"
-ARG BASEIMAGE_DVC="devtools"
-
+ARG BASEIMAGE_USECASE="devtools"
 
 FROM --platform=x86_64 ${BASEIMAGE} as devtools
 
@@ -36,7 +35,7 @@ RUN set -xe \
   && cd / && rm -rf $lgtmp
 
 
-FROM --platform=x86_64 ${BASEIMAGE_DVC} as usecase
+FROM --platform=x86_64 ${BASEIMAGE_USECASE} as usecase
 
 LABEL io.while-true-do.site="https://while-true-do.io"
 LABEL io.while-true-do.blog="https://blog.while-true-do.io"
@@ -50,16 +49,18 @@ ARG FILES_IN="files/usr"
 ARG FILES_USR="${HOME}/.local/bin"
 ARG EP="${FILES_USR}/entrypoint.sh"
 ARG LIBGIT2="/lib64"
-ARG DVC_STORTYPE=""
 ARG GITNAME=""
 ARG GITDOMAIN=""
+ARG DVC_STORTYPE=""
+ARG DVC_ACCESS_KEY_ID=""
+ARG DVC_ACCESS_KEY_SECRET=""
 
 USER ${USER}
 WORKDIR ${HOME}
 
-ENV DVC_ACCESS_KEY_ID $DVC_ACCESS_KEY_ID
-ENV DVC_ACCESS_KEY_SECRET $DVC_ACCESS_KEY_SECRET
-ENV PATH "${FILES_USR}:${PATH}"
+ENV DVC_ACCESS_KEY_ID=$DVC_ACCESS_KEY_ID
+ENV DVC_ACCESS_KEY_SECRET=$DVC_ACCESS_KEY_SECRET
+ENV PATH="${FILES_USR}:${PATH}"
 
 #pygit2
 #fatal error: git2.h: No such file or directory
@@ -78,10 +79,10 @@ RUN set -xe \
 
 COPY --chown=${USER}:${USER} ${FILES_IN} ${FILES_USR}
 RUN chmod +x ${EP}
-RUN ${EP}
+RUN ${EP} ${GITNAME} ${GITDOMAIN}
 
-CMD   sh
-#ENTRYPOINT dvc ${GITNAME} ${GITDOMAIN}
+CMD sh
+#ENTRYPOINT dvc
 
 USER root
 RUN apk del .tmp-build-deps \
