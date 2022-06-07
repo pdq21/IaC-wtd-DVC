@@ -36,7 +36,7 @@ RUN set -xe \
   && cd / && rm -rf $lgtmp
 
 
-FROM --platform=x86_64 ${BASEIMAGE_DVC} as dvc
+FROM --platform=x86_64 ${BASEIMAGE_DVC} as usecase
 
 LABEL io.while-true-do.site="https://while-true-do.io"
 LABEL io.while-true-do.blog="https://blog.while-true-do.io"

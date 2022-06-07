@@ -1,23 +1,23 @@
 #!/usr/bin/env sh
 
 tardevtools="devtools"
-tardvc="dvc"
+tarusecase="usecase"
 tarall="all"
 reg="localhost"
 reguser="wtd-io"
 dvc_stor_types=("all" "dvc-s3" "dvc-azure" \
   "dvc-gdrive" "dvc-gs" "dvc-oss" "dvc-ssh")
 
-if [ "$1" == "$tardevtools" ] || [ "$1" == "$tardvc" ]; then
+if [ "$1" == "$tardevtools" ] || [ "$1" == "$tarusecase" ]; then
   target=$1
 elif [ "$1" == "$tarall" ]; then
-  target="$tardevtools $tardvc"
+  target="$tardevtools $tarusecase"
 else
-  target=$tardvc
+  target=$tarusecase
 fi
 
 for t in $target; do
-  if [ $t == $tardvc ]; then
+  if [ $t == $tarusecase ]; then
     if [[ " ${dvc_stor_types[*]} " =~ " $3 " ]]; then
       dvc_stor_type=$3
     elif [ ! -z $3 ]; then
