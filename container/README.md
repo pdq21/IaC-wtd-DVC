@@ -15,6 +15,12 @@ Traceback (most recent call last):
 ModuleNotFoundError: No module named 'dvc'
 ```
 
+Warning
+
+```shell
+Defaulting to user installation because normal site-packages is not writeable
+```
+
 DVC location
 
 ```shell

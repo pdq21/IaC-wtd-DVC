@@ -17,29 +17,26 @@ else
 fi
 
 for t in $target; do
+
+  #TODO --squash or --squash-all ?
+  param=" --target $t"
+  tagtmp="$reguser/$t:${2:-latest}"
+
   if [ $t == $tarusecase ]; then
-    if [[ " ${dvc_stor_types[*]} " =~ " $3 " ]]; then
-      dvc_stor_type=$3
-    elif [ ! -z $3 ]; then
-      echo "BUILD WARN: Omitting invalid DVC remote storage type '$3'."
-      dvc_stor_type=""
-    fi
     ba=' --build-arg '
     param=$ba'$ACCESS_KEY_ID='"'${ACCESS_KEY_ID:-default}'"
     param+=$ba'$ACCESS_KEY_SECRET='"'${ACCESS_KEY_SECRET:-default}'"
-    param+=$ba'$DVC_STORTYPE='"'${dvc_stor_type}'"
     param+=$ba'$GITNAME='"'${4:-}'"
     param+=$ba'$GITDOMAIN='"'${5:-}'"
     if [ ! "$1" == "$tarall" ]; then
       param+=$ba'$BASEIMAGE_DVC='"'$reg/$reguser/$tardevtools:$tag'"
     fi
-  else
-    param=""
+    if [[ " ${dvc_stor_types[*]} " =~ " $3 " ]]; then
+      param+=$ba'$DVC_STORTYPE='"'${dvc_stor_type}'"
+    elif [ ! -z $3 ]; then
+      echo "BUILD WARN: Omitting invalid DVC remote storage type '$3'."
+    fi
   fi
-  param+=" --target $t"
-  tagtmp="$reguser/$t:${2:-latest}"
-
-  #TODO --squash or --squash-all ?
 
   echo "##########################################"
   echo "#    Building $tagtmp."
